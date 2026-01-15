@@ -1,5 +1,5 @@
-#Projeto theboys#
-##Propósito
+# Projeto theboys
+## Propósito
   <p> Este projeto consiste em simular um mundo com heróis, bases e missões. Cada herói possui um conjunto de habilidades (vôo, invisibilidade, visão de raios X, superaudição, etc.), um nível de experiência e outros atributos.
 
 As bases estão espalhadas pelo mundo e os heróis se deslocam periodicamente entre elas. Cada base possui uma lotação máxima e uma fila de espera; ao chegar na base, o herói pode decidir entre esperar na fila ou desistir, viajando para outra base. Cada base possui um porteiro que gerencia a entrada/saída dos heróis e a fila de espera.
