@@ -110,14 +110,14 @@ void evento_chega (Mundo *mundo, int t, int h, int b)
     {
         evento = cria_evento (t, EV_ESPERA, h, b); 
         insere_lef (mundo->lef, evento);
-        printf (" %6d: CHEGA  HEROI %2d BASE %d (%2d/%2d) ESPERA\n", t, h, b, 
+        printf (" %6d: CHEGA  HEROI %2d BASE %d (%1d/%1d) ESPERA\n", t, h, b, 
                 set_card (mundo->base[b].presentes), mundo->base->lotacao);
     }
     else
     {
         evento = cria_evento (t, EV_DESISTE, h, b);
         insere_lef (mundo->lef, evento);
-        printf (" %6d: CHEGA  HEROI %2d BASE %d (%2d/%2d) DESISTE\n", t, h, b, 
+        printf (" %6d: CHEGA  HEROI %2d BASE %d (%1d/%1d) DESISTE\n", t, h, b, 
                 mundo->base->presentes->num, mundo->base->lotacao);
     }
      
@@ -135,7 +135,7 @@ void evento_espera (Mundo *mundo, int t, int h, int b)
     if (h < 0 || h >= mundo->n_herois || b < 0 || b >= mundo->n_bases)
         return;
 
-    printf (" %6d: ESPERA HEROI %2d BASE %d (%2d)\n", t, h, b, 
+    printf (" %6d: ESPERA HEROI %2d BASE %d (%1d)\n", t, h, b, 
             set_card(mundo->base[b].presentes));
 
     
@@ -160,13 +160,8 @@ void evento_desiste (Mundo *mundo, int t, int h, int b)
         return;
     }
          
-    // Verifica se os índices são válidos.
-    if (h < 0 || h >= mundo->n_herois || b < 0 || b >= mundo->n_bases)
-    {
-        return;
-    }
 
-    printf (" %6d: DESISTE HEROI %2d BASE %d (%2d)\n", t, h, b, set_card(mundo->base[b].presentes));
+    printf (" %6d: DESISTE HEROI %2d BASE %d (%1d)\n", t, h, b, set_card(mundo->base[b].presentes));
 
     base_d = aleat (0, mundo->n_bases -1);
     evento = cria_evento (t, EV_VIAJA, h, base_d);
@@ -226,7 +221,7 @@ void evento_entra (Mundo *mundo, int t, int h, int b)
     // Calcula o tempo de permanência do herói na base.
     tpb = 15 + (mundo->heroi[h].paciencia * aleat (1, 20));
 
-    printf (" %6d: ENTRA  HEROI %2d BASE %d (%2d/%2d) SAI %d\n", t, h, b, 
+    printf (" %6d: ENTRA  HEROI %2d BASE %d (%1d/%1d) (SAI NO TEMPO:%d)\n", t, h, b, 
             set_card(mundo->base[b].presentes), mundo->base[b].lotacao, t + tpb);
 
     
@@ -249,7 +244,7 @@ void evento_sai (Mundo *mundo, int t, int h, int b)
         return;
     }
 
-    printf (" %6d: SAI    HEROI %2d BASE %d (%2d/%2d)\n", t, h, b, 
+    printf (" %6d: SAI    HEROI %2d BASE %d (%1d/%1d)\n", t, h, b, 
             set_card(mundo->base[b].presentes), mundo->base[b].lotacao);
 
     set_del (mundo->base[b].presentes, h);         // Retira Herói do conjunto.
@@ -283,7 +278,7 @@ void evento_viaja (Mundo *mundo, int t, int h, int d)
     distancia = calcula_distancia (mundo, h, d);
     duracao_v = duracao_viagem (mundo, h, d);
 
-    printf (" %6d: VIAJA  HEROI %2d BASE %d BASE %d DIST %ld VEL %d CHEGA %ld\n", t, h, 
+    printf (" %6d: VIAJA  HEROI %2d BASE %d P/ BASE %d (DIST: %ld KM) (VEL: %d KM/H) (CHEGA NO TEMPO: %ld)\n", t, h, 
              mundo->heroi[h].base, d, distancia, mundo->heroi[h].velocidade, t + duracao_v); 
    
     evento = cria_evento (t + duracao_v, EV_CHEGA, h, d);
@@ -402,6 +397,7 @@ void evento_fim (Mundo *mundo, int t)
     medias_cumpridas = (mundo->n_missoes_cumpridas * 100) / (float)mundo->n_missoes;
     
     printf (" %6d: FIM\n", t);
+    printf ("\n");
     for (i = 0; i < mundo->n_herois; i++)
     {
         printf ("HEROI %2d PAC %3d VEL %4d EXP %4d HABS", i, mundo->heroi[i].paciencia, mundo->heroi[i].velocidade,
